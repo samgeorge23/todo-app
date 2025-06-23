@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import Header from './components/Header.jsx';
 import Banner from './components/Banner.jsx';
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 function App() {
 
@@ -37,19 +38,23 @@ function App() {
     
 
   return (
-    <div>
+    <div className='container'>
       <Header/>
-      <h3>Enter the tasks to finish today:</h3>
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={text} onChange={(e)=>{setText(e.target.value)}}></input>
-        <button type="submit">Submit</button>
-      </form>
-      <ul>
-          {
-            todo_list.length===0?"":todo_list.map((item,index)=><Banner data={item} key={index} deleteItem={deleteItem}/>)
-          }
-      </ul>
-      
+      <div className='todo-tasks'>
+        <h3>Enter your tasks to finish:</h3>
+        <ul>
+            {
+              todo_list.length===0?"No tasks to finish yet.....":todo_list.map((item,index)=><Banner data={item} key={index} deleteItem={deleteItem}/>)
+            }
+        </ul>
+        <form className="todoForm" onSubmit={handleSubmit}>
+          <input type="text" value={text} placeholder="Enter your task for the day...." onChange={(e)=>{setText(e.target.value)}}></input>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <div className='completed-tasks'>
+        <h3>Completed Tasks</h3>
+      </div>
       
     </div>
   );

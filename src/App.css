@@ -34,3 +34,19 @@
 .completed{
     text-decoration: line-through;
 }
+
+.storageButtons button{
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 10%;
+    border: none;
+    color:white;
+}
+
+.saveButton{
+    background-color: rgba(0, 128, 0, 0.699);
+}
+
+.resetButton{
+    background-color: red;
+}

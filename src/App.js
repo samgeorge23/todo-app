@@ -1,12 +1,18 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import Header from './components/Header.jsx';
 
 function App() {
 
   const [text, setText] = useState("");
-  const [todo_list, setTodoList] = useState([]);
-  const [completedList, setCompletedList] = useState([]);
+  const [todo_list, setTodoList] = useState(()=>{
+    const completedTodo = localStorage.getItem("todo");
+    return completedTodo?JSON.parse(completedTodo):[]
+  });
+  const [completedList, setCompletedList] = useState(()=>{
+    const completedSaved = localStorage.getItem("completed");
+    return completedSaved?JSON.parse(completedSaved):[]
+  });
   const [count,setCount] = useState(0);
   const dragPerson = useRef(0);
   const swappedPerson = useRef(0);
@@ -53,15 +59,45 @@ function App() {
     setTodoList(todoClone);
   }
 
+  function resetContent(){
+    if(todo_list.length>0){
+      localStorage.removeItem("todo");
+      setTodoList([]);
+    }
+    if(completedList.length>0){
+      localStorage.removeItem("completed");
+      setCompletedList([]);
+    }
+  }
+
+  useEffect(()=>{
+    if(localStorage.getItem("todo")){
+      setTodoList(JSON.parse(localStorage.getItem("todo")));
+    }
+    if(localStorage.getItem("completed")){
+      setCompletedList(JSON.parse(localStorage.getItem("completed")));
+    }
+  },[]);
+  
+  useEffect(()=>{
+    localStorage.setItem("todo",JSON.stringify(todo_list));
+    localStorage.setItem("completed",JSON.stringify(completedList));
+  },[todo_list]);
+
+
+
   return (
     <div className='container'>
       <Header/>
-      <div className='todo-tasks'> 
+      <div className='todo-tasks'>
+          <div className='storageButtons'>
+            <button className='resetButton' onClick={resetContent}>Reset Content</button>
+          </div>
           <h3>Enter your tasks to finish:</h3>
             <ul>
               {
                 todo_list.length!==0?todo_list.map((item,index)=>
-                  <li className='to_do'
+                  <li className='to_do' key={index}
                     onDragStart={()=>{dragPerson.current = index}}
                     onDragEnter={()=>{swappedPerson.current = index}}
                     onDragEnd={handleSort}
@@ -99,6 +135,4 @@ function App() {
 
 export default App;
 
-// add a progress bar
-// make ui better
-// save to local storage
+

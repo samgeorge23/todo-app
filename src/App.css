@@ -19,3 +19,18 @@
     outline: none;
     font-size: medium;
 }
+
+.to_do{
+    margin: 10px auto;
+    border: 1px solid black;
+    width:50%;
+    display: flex;
+    justify-content: space-between;
+    padding:5px;
+    height:40px;
+    font-size: medium;
+}
+
+.completed{
+    text-decoration: line-through;
+}
